@@ -1,10 +1,12 @@
 bcrypt==3.2.0
+blinker==1.4
 certifi==2021.5.30
 cffi==1.14.5
 chardet==4.0.0
 click==8.0.1
 Flask==2.0.1
 Flask-Bcrypt==0.7.1
+Flask-DebugToolbar==0.11.0
 Flask-SQLAlchemy==2.5.1
 Flask-WTF==0.15.1
 greenlet==1.1.0
