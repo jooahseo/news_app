@@ -13,23 +13,23 @@ def connect_db(app):
     db.init_app(app)
 
 
-class Favorite(db.Model):
-    """User's favorites news"""
-    __tablename__ = "user_favs"
+class Save(db.Model):
+    """User's saved news"""
+    __tablename__ = "user_save"
 
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.id', ondelete="cascade"),
                         primary_key=True)
 
-    news_id = db.Column(db.Integer,
-                        db.ForeignKey('news.id', ondelete="cascade"),
-                        primary_key=True)
+    news_url = db.Column(db.String,
+                         db.ForeignKey('news.url', ondelete="cascade"),
+                         primary_key=True)
 
     user = db.relationship('User')
     news = db.relationship('News')
 
     def __repr__(self):
-        return f"<user_favs User #{self.user_id} {self.user.username} - News #{self.news_id}>"
+        return f"<user_save User #{self.user_id} {self.user.username} - News #{self.news_id}>"
 
 
 class News(db.Model):
@@ -37,17 +37,15 @@ class News(db.Model):
 
     __tablename__ = "news"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title = db.Column(db.Text, nullable=False)
-    author = db.Column(db.String, nullable=False)
-    date = db.Column(db.Datetime, nullable=False)
+    url = db.Column(db.String, primary_key=True, autoincrement=True)
+    title = db.Column(db.String, nullable=False)
+    description = db.Column(db.String, nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
     image = db.Column(db.String)
-    url = db.Column(db.String, nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    source = db.Column(db.String)
 
-    liked_users = db.relationship(
-        'User', secondary="user_favs", backref="fav_news")
+    saved_user = db.relationship('User',
+                                  secondary="user_save", 
+                                  backref="saved_news")
 
     def __repr__(self):
         return f"<News {self.title[0:40]}... from {self.source}>"
@@ -59,10 +57,12 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.Text, nullable=False, unique=True)
-    email = db.Column(db.Text, nullable=False, unique=True)
+    username = db.Column(db.String(30), nullable=False, unique=True)
+    email = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.Text, nullable=False)
-    category = db.Column(db.String)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id', ondelete="set null"))
+
+    interest = db.relationship('Category', backref="users")
 
     def __repr__(self):
         return f"<User #{self.id}: {self.username}, {self.email}"
@@ -80,12 +80,13 @@ class User(db.Model):
             category=category
         )
         db.session.add(user)
+
         return user
 
     @classmethod
     def authenticate(cls, username, password):
         """"authenticate a user: check if username and password are valid"""
-        
+
         user = cls.query.filter_by(username=username).first()
 
         if user:
@@ -94,3 +95,12 @@ class User(db.Model):
                 return user
 
         return False
+
+
+class Category(db.Model):
+    """news category"""
+
+    __tablename__ = "category"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(30), unique=True)
