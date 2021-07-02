@@ -37,7 +37,7 @@ class News(db.Model):
 
     __tablename__ = "news"
 
-    url = db.Column(db.String, primary_key=True, autoincrement=True)
+    url = db.Column(db.String, primary_key=True)
     title = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
     date = db.Column(db.DateTime, nullable=False)
