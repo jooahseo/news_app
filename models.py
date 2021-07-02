@@ -68,7 +68,7 @@ class User(db.Model):
         return f"<User #{self.id}: {self.username}, {self.email}"
 
     @classmethod
-    def signup(cls, username, email, password, category):
+    def signup(cls, username, email, password, category_id):
         """sign up user. Hashed password"""
 
         hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
@@ -77,7 +77,7 @@ class User(db.Model):
             username=username,
             email=email,
             password=hashed_pwd,
-            category=category
+            category_id=category_id
         )
         db.session.add(user)
 
@@ -104,3 +104,14 @@ class Category(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(30), unique=True)
+
+    @classmethod
+    def retrieve_or_add(cls, name):
+        category = cls.query.filter_by(name=name).first()
+
+        if not category:
+            category = Category(name=name)
+            db.session.add(category)
+            db.session.commit()  
+
+        return category

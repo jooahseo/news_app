@@ -5,7 +5,7 @@ import requests
 
 from sqlalchemy.exc import IntegrityError
 
-from models import db, connect_db, News, User
+from models import db, connect_db, News, User, Category, Save
 from forms import UserForm, LoginForm
 from keys import API_KEY
 
@@ -63,9 +63,11 @@ def login():
 
         if user:
             do_login(user)
-            flash(f"Hello, {user.username}!", "success")
+            # flash(f"Hello, {user.username}!", "success")
             return redirect("/")
-    
+        else:
+            flash(f"username or password is not valid", "danger")
+
     return render_template('login.html', form=form)
 
 
@@ -76,17 +78,18 @@ def signup():
     form = UserForm()
 
     if form.validate_on_submit():
+        category = Category.retrieve_or_add(form.category.data)
         try:
             user = User.signup(
                 username=form.username.data,
                 email=form.email.data,
                 password=form.password.data,
-                category=form.category.data 
+                category_id= category.id
             )
             db.session.commit()
 
         except IntegrityError:
-            flash("Username already taken", 'danger')
+            form.username.errors.append('Username already taken.')
             return render_template('signup.html', form=form)
 
         do_login(user)
@@ -100,3 +103,7 @@ def signup():
 @app.route('/logout')
 def logout():
     """logout the user"""
+
+    do_logout()
+    flash('See you again!', 'info')
+    return redirect('/login')

@@ -14,7 +14,7 @@ class UserForm(FlaskForm):
                                     Email(message="Not a valid Email address")])
     password = PasswordField("Password",
                              validators=[InputRequired("Password required"),
-                                         Length(min=6, max=30, message="Password must be between 6 and 30 characters")])
+                                         Length(min=6, max=128, message="Password must be longer than 6 characters")])
     category = SelectField("I am interested in",
                            choices=[("business", "Business"), ("entertainment", "Entertainment"),
                                     ("health", "Health"), ("science", "Science"),
