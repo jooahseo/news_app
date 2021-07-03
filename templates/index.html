@@ -6,50 +6,110 @@
 <p>{{i}}</p>
 {% endfor %} -->
 
-<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+<!-- {% if g.user %}
+    <div id="recommened news">
+        <h2>Recommened for {{g.user.username}}</h2>
+        {% for news in interest_news %}
+            <h3>{{news.title}}</h3>
+            <p>{{news.description}}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+<div id="top-headlines">
+    <h2>Today's Top Headlines</h2>
+    {% for headline in top_headlines %}
+        <h3>{{headline.title}}</h3>
+        <p>{{headline.description}}</p>
+    {% endfor %}
+</div> -->
+{% if g.user %}
+<div id="carouselControl1" class="carousel slide news_carousel" data-bs-ride="carousel">
+    <h3>Recommended for you</h3>
     <div class="carousel-inner">
-      <div class="carousel-item active">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card">
-                <img src="https://mdbootstrap.com/img/new/standard/nature/181.jpg" class="d-block w-100" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">New COVID-19 Varient out in India</h5>
-                    <p class="card-text">
-                        Some quick example text to build on the card title and
-                        make up the bulk of the card's content.Some quick example text to build on the card title and
-                        make up the bulk of the card's content.Some quick example text to build on the card title and
-                        make up the bulk of the card's content.
-                    </p>
-                    <a href="#!" class="text-secondary">Read More</a>
+        {%for news in interest_news %}
+        {% if loop.index == 1%}
+        <div class="carousel-item active">
+        {% else %}
+        <div class="carousel-item">
+        {% endif %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card h-100">
+                    {% if not news.urlToImage %}
+                        <img src="/static/image/news.png" alt="{{news.title[0:30]}}">
+                    {% else %}
+                        <a href="{{news.urlToImage}}">
+                            <img src="{{news.urlToImage}}" class="d-block w-100" alt="image for: {{news.title[0:30]}}">
+                        </a>
+                    {% endif %}
+                    <div class="card-body">
+                        <h6 class="card-title">{{news.title}}</h6>
+                        <p class="card-text">
+                            <div class="news_description">
+                                {{news.description}}
+                            </div>
+                            
+                        </p>
+                        <a href="{{news.url}}" target="_blank" class="text-secondary">Read More</a>
+                    </div>
                 </div>
             </div>
         </div>
-      </div>
-      <div class="carousel-item">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card">
-                <img src="https://mdbootstrap.com/img/new/standard/nature/182.jpg" class="d-block w-100" alt="...">
-            </div>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card">
-                <img src="https://mdbootstrap.com/img/new/standard/nature/183.jpg" class="d-block w-100" alt="...">
-            </div>
-        </div>
-      </div>
+        {% endfor %}
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselControl1" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselControl1" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
     </button>
   </div>
-
+{% endif %}
+<div id="carouselControl2" class="carousel slide news_carousel" data-bs-ride="carousel">
+    <h3>Today's top headlines</h3>
+    <div class="carousel-inner">
+        {%for news in top_headlines %}
+        {% if loop.index == 1%}
+        <div class="carousel-item active">
+        {% else %}
+        <div class="carousel-item">
+        {% endif %}
+            <div id="news_card" class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch">
+                <div class="card">
+                    {% if not news.urlToImage %}
+                        <img src="/static/image/news.png" alt="{{news.title[0:30]}}">
+                    {% else %}
+                        <a href="{{news.urlToImage}}">
+                            <img src="{{news.urlToImage}}" class="d-block w-100" alt="image for: {{news.title[0:30]}}">
+                        </a>
+                    {% endif %}
+                    <div class="card-body">
+                        <h6 class="card-title">{{news.title}}</h6>
+                        <p class="card-text">
+                            <div class="news_description">
+                                {{news.description}}
+                            </div>
+                            
+                        </p>
+                        <a href="{{news.url}}" target="_blank" class="text-secondary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselControl2" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselControl2" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+</div>
+{% if not g.user %}
+{% endif %}
 
 <!-- <div class="container text-center my-3">
     <h2 class="font-weight-light">Bootstrap Multi Slide Carousel</h2>
@@ -129,21 +189,5 @@
 </div> -->
 
 
-<!-- {% if g.user %}
-    <div id="recommened news">
-        <h2>Recommened for {{g.user.username}}</h2>
-        {% for news in interest_news %}
-            <h3>{{news.title}}</h3>
-            <p>{{news.description}}</p>
-        {% endfor %}
-    </div>
-{% endif %}
-<div id="top-headlines">
-    <h2>Today's Top Headlines</h2>
-    {% for headline in top_headlines %}
-        <h3>{{headline.title}}</h3>
-        <p>{{headline.description}}</p>
-    {% endfor %}
-</div> -->
 {% endblock%}
 
