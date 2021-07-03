@@ -1,0 +1,45 @@
+{% extends 'base.html' %} {% block title %}User Detail{% endblock %} {%
+block content %}
+<div class="row justify-content-md-center mt-4">
+  <div class="col-md-8">
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-3">
+            <h6 class="mb-0">Username</h6>
+          </div>
+          <div class="col-sm-9 text-secondary">{{g.user.username}}</div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-sm-3">
+            <h6 class="mb-0">Email</h6>
+          </div>
+          <div class="col-sm-9 text-secondary">{{g.user.email}}</div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-sm-3">
+            <h6 class="mb-0">Interested in</h6>
+          </div>
+          <div class="col-sm-9 text-secondary">{{g.user.interest.name}}</div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-sm-3">
+            <h6 class="mb-0">User created at</h6>
+          </div>
+          <div class="col-sm-9 text-secondary">TBD</div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-sm-12">
+            <a class="btn btn-info" href="/edit">Edit</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  {% endblock %}
+
