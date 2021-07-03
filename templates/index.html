@@ -108,8 +108,6 @@
       <span class="visually-hidden">Next</span>
     </button>
 </div>
-{% if not g.user %}
-{% endif %}
 
 <!-- <div class="container text-center my-3">
     <h2 class="font-weight-light">Bootstrap Multi Slide Carousel</h2>
@@ -188,6 +186,14 @@
     <h5 class="mt-2 fw-light">advances one slide at a time</h5>
 </div> -->
 
-
 {% endblock%}
 
+{% block body %}
+{% if not g.user %}
+<div class="container-fluid mt-3">
+    <div class="alert alert-info text-center" role="alert">
+        Welcome! Please <a href="/login" class="alert-link">Log in </a> or  <a href="/signup" class="alert-link">Sign up </a> to save the articles!
+      </div>
+</div>
+{% endif %}
+{% endblock %}

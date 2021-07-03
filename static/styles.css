@@ -70,3 +70,12 @@
         margin-top: -70%;
     }
 }
+
+.news_description{
+    font-size:11px;
+    color:black;
+}
+
+.news_carousel{
+    margin-top: 3%;
+}
