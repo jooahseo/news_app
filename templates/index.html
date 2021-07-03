@@ -1,21 +1,149 @@
 {% extends 'base.html' %}
 {% block title %}Daily News{% endblock %}
 {% block content %}
-{% if g.user %}
+
+<!-- {% for i in range(0,10) %}
+<p>{{i}}</p>
+{% endfor %} -->
+
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card">
+                <img src="https://mdbootstrap.com/img/new/standard/nature/181.jpg" class="d-block w-100" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">New COVID-19 Varient out in India</h5>
+                    <p class="card-text">
+                        Some quick example text to build on the card title and
+                        make up the bulk of the card's content.Some quick example text to build on the card title and
+                        make up the bulk of the card's content.Some quick example text to build on the card title and
+                        make up the bulk of the card's content.
+                    </p>
+                    <a href="#!" class="text-secondary">Read More</a>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card">
+                <img src="https://mdbootstrap.com/img/new/standard/nature/182.jpg" class="d-block w-100" alt="...">
+            </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card">
+                <img src="https://mdbootstrap.com/img/new/standard/nature/183.jpg" class="d-block w-100" alt="...">
+            </div>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+
+<!-- <div class="container text-center my-3">
+    <h2 class="font-weight-light">Bootstrap Multi Slide Carousel</h2>
+    <div class="row mx-auto my-auto justify-content-center">
+        <div id="recipeCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner" role="listbox">
+                <div class="carousel-item active">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card">
+                            <div class="card-img">
+                                <img src="//via.placeholder.com/500x400/31f?text=1" class="img-fluid">
+                            </div>
+                            <div class="card-img-overlay">Slide 1</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card">
+                            <div class="card-img">
+                                <img src="//via.placeholder.com/500x400/e66?text=2" class="img-fluid">
+                            </div>
+                            <div class="card-img-overlay">Slide 2</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card">
+                            <div class="card-img">
+                                <img src="//via.placeholder.com/500x400/7d2?text=3" class="img-fluid">
+                            </div>
+                            <div class="card-img-overlay">Slide 3</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card">
+                            <div class="card-img">
+                                <img src="//via.placeholder.com/500x400?text=4" class="img-fluid">
+                            </div>
+                            <div class="card-img-overlay">Slide 4</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card">
+                            <div class="card-img">
+                                <img src="//via.placeholder.com/500x400/aba?text=5" class="img-fluid">
+                            </div>
+                            <div class="card-img-overlay">Slide 5</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card">
+                            <div class="card-img">
+                                <img src="//via.placeholder.com/500x400/fc0?text=6" class="img-fluid">
+                            </div>
+                            <div class="card-img-overlay">Slide 6</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev bg-transparent w-aut" href="#recipeCarousel" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </a>
+            <a class="carousel-control-next bg-transparent w-aut" href="#recipeCarousel" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </a>
+        </div>
+    </div>
+    <h5 class="mt-2 fw-light">advances one slide at a time</h5>
+</div> -->
+
+
+<!-- {% if g.user %}
     <div id="recommened news">
-        <h1>Recommened for {{g.user.username}}</h1>
+        <h2>Recommened for {{g.user.username}}</h2>
         {% for news in interest_news %}
-            <h2>{{news.title}}</h2>
+            <h3>{{news.title}}</h3>
             <p>{{news.description}}</p>
         {% endfor %}
     </div>
 {% endif %}
 <div id="top-headlines">
-    <h1>Today's Top Headlines</h1>
+    <h2>Today's Top Headlines</h2>
     {% for headline in top_headlines %}
-        <h2>{{headline.title}}</h2>
+        <h3>{{headline.title}}</h3>
         <p>{{headline.description}}</p>
     {% endfor %}
-</div>
+</div> -->
 {% endblock%}
 
