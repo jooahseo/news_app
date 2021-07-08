@@ -180,7 +180,7 @@ def news_list():
         all_articles = News_List()
         all_articles.news_mapper(all_res)
 
-        return render_template('news.html', articles=all_articles.list)
+        return render_template('search.html', articles=all_articles.list)
     else:
         # res = requests.get(f"{BASE_URL}everything?qInTitle={search}&language=en&sortBy=popularity&apiKey={API_KEY}")
         res = newsapi.get_everything(q=search,
@@ -190,7 +190,7 @@ def news_list():
         articles = News_List()
         articles.news_mapper(res)
 
-        return render_template('news.html', articles=articles.list, q=search)
+        return render_template('search.html', articles=articles.list, q=search)
 
 @app.route('/save-news', methods=["POST"])
 def save_news():
@@ -239,3 +239,10 @@ def unsave_news():
     db.session.commit()
     
     return jsonify(message="unsaved successfully", result=True)
+
+@app.route('/saved')
+def get_saved_news():
+    if not g.user:
+        flash("Please login first.", "warning")
+        return redirect('/login')
+    
