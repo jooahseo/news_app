@@ -6,7 +6,17 @@
     {% endif %}
     {% for news in articles %}
         <div class="search_news card mb-3" style="width: 100%;">
-            <button class="saveBtn btn btn-danger btn-sm">Save</button>
+        {% if g.user%}
+          {% if g.user.is_news_saved(news.url) %}
+            <button class="saveBtnSearch saveBtn btn btn-danger btn-sm saved">
+                Saved
+            </button>
+          {% else%}
+            <button class="saveBtnSearch saveBtn btn btn-danger btn-sm">
+                Save
+            </button>
+          {% endif %}
+        {% endif %}
             <div class="row g-0">
                 <div class="col-md-4">
                     {% if not news.image %}

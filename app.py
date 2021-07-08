@@ -185,7 +185,7 @@ def news_list():
         # res = requests.get(f"{BASE_URL}everything?qInTitle={search}&language=en&sortBy=popularity&apiKey={API_KEY}")
         res = newsapi.get_everything(q=search,
                                      language='en',
-                                     sort_by='relevancy')
+                                     sort_by='publishedAt')
 
         articles = News_List()
         articles.news_mapper(res)

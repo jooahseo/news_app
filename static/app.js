@@ -17,7 +17,7 @@ items.forEach((el) => {
 
 /** Add event listeners to buttons in the main ('/') page */
 
-const btns = document.querySelectorAll('.saveBtn')
+const btns = document.querySelectorAll('.saveBtnHome')
 
 for(let i=0; i<btns.length; i++){
     btns[i].addEventListener("click", function(e){
@@ -71,23 +71,29 @@ for(let i=0; i<btns.length; i++){
 
 /** Add event listeners to buttons in the search ('/news') page */
 
-const searchNews = document.querySelectorAll('.search_news')
+const searchBtns = document.querySelectorAll('.saveBtnSearch')
 
-for(let i=0; i< searchNews.length; i++){
-    searchNews[i].addEventListener("click", function(e){
-        e.preventDefault()
-        if(e.target.tagName === "BUTTON"){
-            
-            console.log('image url', e.target.nextElementSibling.children[0].children[0].src)
-            console.log('title', e.target.nextElementSibling.children[1].children[0].children[0].innerHTML)
-            console.log('description', e.target.nextElementSibling.children[1].children[0].children[1].innerHTML)
-            console.log('url', e.target.nextElementSibling.children[1].children[0].children[3].href)
-            console.log('date time',e.target.nextElementSibling.children[1].children[0].children[2].innerHTML)
+for(let i=0; i< searchBtns.length; i++){
+    searchBtns[i].addEventListener("click", function(e){
+        if(e.target.classList.contains("saved")){ //news already saved. 
+            removeNewsFromSearch(e)
+            e.target.innerHTML= "Save"
+            e.target.classList.toggle("saved")
+        }else{ // needs to save news
+            saveNewsFromSearch(e)
+            e.target.innerHTML= "Saved"
+            e.target.classList.toggle("saved")
         }
+        console.log('image url', e.target.nextElementSibling.children[0].children[0].src)
+        console.log('title', e.target.nextElementSibling.children[1].children[0].children[0].innerHTML)
+        console.log('description', e.target.nextElementSibling.children[1].children[0].children[1].innerHTML)
+        console.log('url', e.target.nextElementSibling.children[1].children[0].children[3].href)
+        console.log('date time',e.target.nextElementSibling.children[1].children[0].children[2].innerHTML)
+
     })
 }
 
-/** Functions to request to server */
+/** Functions to request to server: saving news data for user */
 
 async function saveNewsFromHome(e){
     const cardBody = e.target.nextElementSibling.nextElementSibling;
@@ -105,6 +111,26 @@ async function saveNewsFromHome(e){
 
 async function removeNewsFromHome(e){
     const cardBody = e.target.nextElementSibling.nextElementSibling;
+    const url = cardBody.children[3].href;
+
+    await axios.post('/unsave-news',{url})
+}
+
+async function saveNewsFromSearch(e){
+    const cardBody = e.target.nextElementSibling.children[1].children[0];
+
+    const url = cardBody.children[3].href;
+    const title = cardBody.children[0].innerHTML;
+    const description = cardBody.children[1].innerHTML;
+    const date = cardBody.children[2].innerHTML;
+    const image = e.target.nextElementSibling.children[0].children[0].src;
+
+    res = await axios.post('/save-news', {url, title, description, date, image})
+    console.log(res)
+}
+
+async function removeNewsFromSearch(e){
+    const cardBody = e.target.nextElementSibling.children[1].children[0];
     const url = cardBody.children[3].href;
 
     await axios.post('/unsave-news',{url})
