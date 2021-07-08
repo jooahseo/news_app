@@ -1,1 +1,1 @@
-# news_now
+# news_app
