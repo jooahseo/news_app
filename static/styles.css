@@ -41,7 +41,6 @@
 .carousel-control-prev-icon{
     background-color: black;
     border-radius: 10px;
-    
 }
 
 .carousel-control-next-icon{
@@ -49,16 +48,31 @@
     border-radius: 10px;
 }
 
+.carousel-control-next,
+.carousel-control-prev{
+    width: 2%
+}
 
 @media (min-width: 575px){
     .carousel-control-prev-icon{
-        margin-left:-140%;  
+        margin-left:-250%;  
     }
 
     .carousel-control-next-icon{
-        margin-right: -140%;
+        margin-right: -250%;
     }
 }
+
+@media (min-width: 769px){
+    .carousel-control-prev-icon{
+        margin-left:-350%;  
+    }
+
+    .carousel-control-next-icon{
+        margin-right: -350%;
+    }
+}
+
 @media(max-width:574px){
     .carousel-control-prev-icon{
         margin-left: -50%;
@@ -78,4 +92,28 @@
 
 .news_carousel{
     margin-top: 3%;
+}
+
+.saveBtn{
+    position: absolute;
+    display: none;
+    right: 0;
+    margin: 5px;
+    margin-right: 10px;
+}
+
+.card{
+    position: relative;
+}
+
+.card:hover .saveBtn{
+    display: block;
+}
+
+.btn-sm{
+    font-size:10px;
+}
+
+.date-time{
+    font-size: 9px;
 }

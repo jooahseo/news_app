@@ -7,7 +7,7 @@ from newsapi import NewsApiClient
 from sqlalchemy.exc import IntegrityError
 
 from models import db, connect_db, News, User, Category, Save
-from forms import UserForm, LoginForm, UserEditForm
+from forms import UserForm, LoginForm, UserEditForm, NewsForm
 from keys import API_KEY
 
 app = Flask(__name__)
@@ -23,10 +23,12 @@ toolbar = DebugToolbarExtension(app)
 connect_db(app)
 
 CURR_USER_KEY = "curr_user"
+BASE_URL = "https://newsapi.org/v2/"
 newsapi = NewsApiClient(api_key=API_KEY)
 
 ##############################################################################
 # User signup/login/logout/edit
+
 
 @app.before_request
 def add_user_to_g():
@@ -109,6 +111,7 @@ def logout():
     flash('See you again!', 'info')
     return redirect('/login')
 
+
 @app.route('/profile')
 def user_info():
     """Show user's info"""
@@ -118,13 +121,14 @@ def user_info():
 
     return render_template('user.html')
 
+
 @app.route('/edit', methods=["GET", "POST"])
 def user_edit():
     """Edit a current user"""
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect('/')
-    
+
     form = UserEditForm(obj=g.user, category=g.user.interest.name)
 
     if form.validate_on_submit():
@@ -138,28 +142,85 @@ def user_edit():
         flash('Successfully saved!', 'success')
         return redirect('/profile')
 
-    return render_template('edit.html', form = form)
+    return render_template('edit.html', form=form)
+
 ##############################################################################
 # News request
+
 
 @app.route('/')
 def home():
     """show homepage"""
-    # top_res = newsapi.get_top_headlines(country='us',
-    #                                     language='en')
-    # top_headlines = top_res['articles']
+    top_res = newsapi.get_top_headlines(country='us',
+                                        language='en')
+    top_headlines = top_res['articles']
 
-    # if g.user:
-    #     user_cat = g.user.interest
-    #     # print(" ******************************* g.user.interest ******************************* ")
-    #     # print(user_cat.name)
-    #     # print(" ******************************************************************************* ")
-    #     interest_res = newsapi.get_top_headlines(country='us',
-    #                                              category=user_cat.name,
-    #                                              language='en')
+    if g.user:
+        user_category = g.user.interest.name.lower()
+        interest_res = newsapi.get_top_headlines(country='us',
+                                                 category=user_category,
+                                                 language='en')
 
-    #     interest_news = interest_res['articles']
-    #     return render_template('index.html', interest_news = interest_news, top_headlines=top_headlines)
-    # else:
-    #     return render_template('index.html', top_headlines=top_headlines)
-    return render_template('base.html')
+        interest_news = interest_res['articles']
+        return render_template('index.html', interest_news=interest_news, top_headlines=top_headlines)
+    else:
+        return render_template('index.html', top_headlines=top_headlines)
+
+
+@app.route('/news')
+def news_list():
+    """page with listing of news that user searched for"""
+
+    search = request.args.get('q')
+    print(" *************************** I SEARCHED ********************************* ")
+    print(search)
+    if not search:
+        all_res = newsapi.get_top_headlines(country='us', language='en')
+        all_articles = all_res['articles']
+        print(" *************************** WHATS THE TOTAL RESULTS ********************************* ")
+        print(all_res['totalResults'])
+        print(" *************************** HOW MANY RESULTS ON PAGE********************************* ")
+        print(len(all_articles))
+        return render_template('news.html', articles=all_articles)
+    else:
+        # res = requests.get(f"{BASE_URL}everything?qInTitle={search}&language=en&sortBy=popularity&apiKey={API_KEY}")
+        res = newsapi.get_everything(q=search,
+                                     language='en',
+                                     sort_by='relevancy')
+        print(" *************************** WHATS THE TOTAL RESULTS ********************************* ")
+        print(res['totalResults'])
+        articles = res['articles']
+        print(" *************************** HOW MANY RESULTS ON PAGE********************************* ")
+        print(len(articles))
+        return render_template('news.html', articles=articles)
+
+@app.route('/save-news', methods=["POST"])
+def save_news():
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect('/')
+    
+    json = request.get_json()
+    news_form = NewsForm.from_json(json, meta={'csrf': False})
+    
+    if news_form.validate():
+        url = news_form.data['url']
+        title = news_form.data['title']
+        description = news_form.data['description']
+        date = news_form.data['date']
+        image = news_form.data['image']
+
+        print("*************************** DATA GOT ***************************")
+        print(url, title, description, date, image)
+        try:
+            news = News.save_news(url=url, title=title, description=description,date=date,image=image)
+            new_save = Save(user_id=g.user.id, news_url=news.url)
+            db.session.add(new_save)
+            db.session.commit()
+        except:
+            flash("Saving news failed", "danger")
+            return jsonify(errors="database failure", result=False)
+        return jsonify(message="OK", result=True)
+
+    flash('something went wrong with news articles',"danger")
+    return jsonify(errors=news_form.errors, result=False)

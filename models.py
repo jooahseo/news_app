@@ -41,7 +41,8 @@ class News(db.Model):
     title = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
     date = db.Column(db.DateTime, nullable=False)
-    image = db.Column(db.String)
+    image = db.Column(db.Text,
+                      default="/static/image/news.png" )
 
     saved_user = db.relationship('User',
                                   secondary="user_save", 
@@ -50,6 +51,18 @@ class News(db.Model):
     def __repr__(self):
         return f"<News {self.title[0:40]}... from {self.source}>"
 
+    @classmethod
+    def save_news(cls, url, title, description, date, image):
+        news = cls.query.fliter_by(url=url).first()
+
+        if news:
+            return news
+        else:
+            news = News(url=url, title=title, description=description, 
+                        date=date, image=image)
+            db.session.add(news)
+            db.session.commit()
+            return news
 
 class User(db.Model):
     """User in the system"""

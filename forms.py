@@ -1,8 +1,10 @@
 from flask.app import Flask
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, PasswordField
+from wtforms import StringField, SelectField, PasswordField, DateTimeField
 from wtforms.validators import InputRequired, Email, url, Length, DataRequired
+import wtforms_json
 
+wtforms_json.init()
 news_category = [("Business", "Business"), ("Entertainment", "Entertainment"),
                  ("Health", "Health"), ("Science", "Science"),
                  ("Sports", "Sports"), ("Technology", "Technology"), ("General", "General")]
@@ -44,3 +46,16 @@ class LoginForm(FlaskForm):
 
     password = PasswordField("Password",
                              validators=[InputRequired("Password required")])
+
+class NewsForm(FlaskForm):
+    """News Form"""
+    url = StringField("url", 
+        validators=[InputRequired(message="URL required.")])
+    title = StringField("title",
+        validators=[InputRequired(message="Title required.")])
+    description = StringField("description",
+        validators=[InputRequired(message="Description required.")])
+    date = StringField("date",
+        validators=[InputRequired(message="Date Required.")])
+    image = StringField('image', 
+        validators=[InputRequired(message="image Required.")])

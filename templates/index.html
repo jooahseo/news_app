@@ -2,26 +2,6 @@
 {% block title %}Daily News{% endblock %}
 {% block content %}
 
-<!-- {% for i in range(0,10) %}
-<p>{{i}}</p>
-{% endfor %} -->
-
-<!-- {% if g.user %}
-    <div id="recommened news">
-        <h2>Recommened for {{g.user.username}}</h2>
-        {% for news in interest_news %}
-            <h3>{{news.title}}</h3>
-            <p>{{news.description}}</p>
-        {% endfor %}
-    </div>
-{% endif %}
-<div id="top-headlines">
-    <h2>Today's Top Headlines</h2>
-    {% for headline in top_headlines %}
-        <h3>{{headline.title}}</h3>
-        <p>{{headline.description}}</p>
-    {% endfor %}
-</div> -->
 {% if g.user %}
 <div id="carouselControl1" class="carousel slide news_carousel" data-bs-ride="carousel">
     <h3>Recommended for you</h3>
@@ -33,21 +13,18 @@
         <div class="carousel-item">
         {% endif %}
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <div class="card h-100">
+                <div class="news_card card h-100">
+                    <button class="saveBtn btn btn-danger btn-sm">Save</button>
                     {% if not news.urlToImage %}
-                        <img src="/static/image/news.png" alt="{{news.title[0:30]}}">
+                        <img src="/static/image/news.png"  alt="{{news.title[0:30]}}">
                     {% else %}
-                        <a href="{{news.urlToImage}}">
-                            <img src="{{news.urlToImage}}" class="d-block w-100" alt="image for: {{news.title[0:30]}}">
-                        </a>
+                        <img src="{{news.urlToImage}}" class="d-block w-100" alt="image for: {{news.title[0:30]}}">
                     {% endif %}
                     <div class="card-body">
                         <h6 class="card-title">{{news.title}}</h6>
-                        <p class="card-text">
-                            <div class="news_description">
-                                {{news.description}}
-                            </div>
-                            
+                        <span class="date-time text-muted">{{news.publishedAt}}</span>
+                        <p class="card-text news_description">
+                            {{news.description}}
                         </p>
                         <a href="{{news.url}}" target="_blank" class="text-secondary">Read More</a>
                     </div>
@@ -75,22 +52,21 @@
         {% else %}
         <div class="carousel-item">
         {% endif %}
-            <div id="news_card" class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch">
-                <div class="card">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch">
+                <div class="news_card card">
+                    {% if g.user%}
+                    <button class="saveBtn btn btn-danger btn-sm">Save</button>
+                    {% endif %}
                     {% if not news.urlToImage %}
                         <img src="/static/image/news.png" alt="{{news.title[0:30]}}">
                     {% else %}
-                        <a href="{{news.urlToImage}}">
-                            <img src="{{news.urlToImage}}" class="d-block w-100" alt="image for: {{news.title[0:30]}}">
-                        </a>
+                        <img src="{{news.urlToImage}}" class="d-block w-100" alt="image for: {{news.title[0:30]}}">
                     {% endif %}
                     <div class="card-body">
                         <h6 class="card-title">{{news.title}}</h6>
-                        <p class="card-text">
-                            <div class="news_description">
-                                {{news.description}}
-                            </div>
-                            
+                        <span class="date-time text-muted">{{news.publishedAt}}</span>
+                        <p class="card-text news_description">
+                            {{news.description}}
                         </p>
                         <a href="{{news.url}}" target="_blank" class="text-secondary">Read More</a>
                     </div>
