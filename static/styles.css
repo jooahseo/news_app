@@ -94,12 +94,25 @@
     margin-top: 3%;
 }
 
+.news_img{
+    height: 35%;
+}
+
 .saveBtn{
     position: absolute;
     display: none;
     right: 0;
     margin: 5px;
     margin-right: 10px;
+}
+
+.saved{
+    background-color: forestgreen;
+    border-color:forestgreen;
+}
+.saved:hover{
+    background-color: darkgreen;
+    border-color:darkgreen;
 }
 
 .card{

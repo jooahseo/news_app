@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}News Search{% endblock %}
 {% block content %}
+    {% if not articles %}
+    <p>No result found for <b>"{{q}}"</b></p>
+    {% endif %}
     {% for news in articles %}
         <div class="search_news card mb-3" style="width: 100%;">
             <button class="saveBtn btn btn-danger btn-sm">Save</button>

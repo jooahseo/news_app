@@ -134,8 +134,6 @@ def user_edit():
 
     if form.validate_on_submit():
         category = Category.retrieve_or_add(form.category.data)
-        print(" ************************************************************ ")
-        print(category.name)
         g.user.email = form.email.data
         g.user.category_id = category.id
         db.session.add(g.user)
@@ -156,18 +154,15 @@ def home():
                                         language='en')
     top_headlines = News_List()
     top_headlines.news_mapper(top_res)
-    print(" *************************** top_headlines.list ********************************* ")
-    print(top_headlines.list)
+
     if g.user:
         user_category = g.user.interest.name.lower()
         interest_res = newsapi.get_top_headlines(country='us',
                                                  category=user_category,
                                                  language='en')
-
         interest_news = News_List()
         interest_news.news_mapper(interest_res)
-        print(" *************************** interest_news.list ********************************* ")
-        print(interest_news.list)
+
         return render_template('index.html', interest_news=interest_news.list, top_headlines=top_headlines.list)
     else:
         return render_template('index.html', top_headlines=top_headlines.list)
@@ -182,23 +177,20 @@ def news_list():
     print(search)
     if not search:
         all_res = newsapi.get_top_headlines(country='us', language='en')
-        all_articles = all_res['articles']
-        print(" *************************** WHATS THE TOTAL RESULTS ********************************* ")
-        print(all_res['totalResults'])
-        print(" *************************** HOW MANY RESULTS ON PAGE********************************* ")
-        print(len(all_articles))
-        return render_template('news.html', articles=all_articles)
+        all_articles = News_List()
+        all_articles.news_mapper(all_res)
+
+        return render_template('news.html', articles=all_articles.list)
     else:
         # res = requests.get(f"{BASE_URL}everything?qInTitle={search}&language=en&sortBy=popularity&apiKey={API_KEY}")
         res = newsapi.get_everything(q=search,
                                      language='en',
                                      sort_by='relevancy')
-        print(" *************************** WHATS THE TOTAL RESULTS ********************************* ")
-        print(res['totalResults'])
-        articles = res['articles']
-        print(" *************************** HOW MANY RESULTS ON PAGE********************************* ")
-        print(len(articles))
-        return render_template('news.html', articles=articles)
+
+        articles = News_List()
+        articles.news_mapper(res)
+
+        return render_template('news.html', articles=articles.list, q=search)
 
 @app.route('/save-news', methods=["POST"])
 def save_news():
@@ -217,15 +209,19 @@ def save_news():
         image = news_form.data['image']
 
         print("*************************** DATA I GOT ***************************")
-        print(url, title, description, date, image)
-        try:
-            news = News.save_news(url=url, title=title, description=description,date=date,image=image)
-            new_save = Save(user_id=g.user.id, news_url=news.url)
-            db.session.add(new_save)
-            db.session.commit()
-        except:
-            flash("Saving news failed", "danger")
-            return jsonify(errors="could not save to the database", result=False)
+        print(f'URL: {url}--space check')
+        print(f'Title: {title}--space check')
+        print(f'Description: {description}--space check')
+        print(f'Date: {date}--space check')
+        print(f'Image: {image}--space check')
+
+        
+        news = News.save_news(url=url, title=title, description=description,date=date,image=image)
+        new_save = Save(user_id=g.user.id, news_url=news.url)
+        db.session.add(new_save)
+        db.session.commit()
+        # except:
+        #     return jsonify(errors="could not save to the database", result=False)
         return jsonify(message="OK", result=True)
 
     flash('something went wrong with news articles',"danger")
@@ -238,4 +234,8 @@ def unsave_news():
         return redirect('/')
     
     url = request.json['url']
+    saved = Save.query.get_or_404((g.user.id, url))
+    db.session.delete(saved)
+    db.session.commit()
     
+    return jsonify(message="unsaved successfully", result=True)

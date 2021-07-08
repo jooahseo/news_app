@@ -29,7 +29,7 @@ class Save(db.Model):
     news = db.relationship('News')
 
     def __repr__(self):
-        return f"<user_save User #{self.user_id} {self.user.username} - News #{self.news_id}>"
+        return f"<user_save User #{self.user_id} {self.user.username} - News #{self.news_url}>"
 
 
 class News(db.Model):
@@ -53,7 +53,7 @@ class News(db.Model):
 
     @classmethod
     def save_news(cls, url, title, description, date, image):
-        news = cls.query.fliter_by(url=url).first()
+        news = cls.query.filter_by(url=url).first()
 
         if news:
             return news
@@ -79,6 +79,14 @@ class User(db.Model):
 
     def __repr__(self):
         return f"<User #{self.id}: {self.username}, {self.email}"
+
+    def is_news_saved(self, url):
+        """Is this news' url in the user's save?"""
+
+        news = Save.query.get((self.id, url))
+        return True if news else False
+        # found_news = [news for news in self.saved_news if news.url == url]
+        # return len(found_news) == 1
 
     @classmethod
     def signup(cls, username, email, password, category_id):
