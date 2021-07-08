@@ -9,6 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from models import db, connect_db, News, User, Category, Save
 from forms import UserForm, LoginForm, UserEditForm, NewsForm
 from keys import API_KEY
+from news_mapper import News_List
 
 app = Flask(__name__)
 
@@ -153,23 +154,28 @@ def home():
     """show homepage"""
     top_res = newsapi.get_top_headlines(country='us',
                                         language='en')
-    top_headlines = top_res['articles']
-
+    top_headlines = News_List()
+    top_headlines.news_mapper(top_res)
+    print(" *************************** top_headlines.list ********************************* ")
+    print(top_headlines.list)
     if g.user:
         user_category = g.user.interest.name.lower()
         interest_res = newsapi.get_top_headlines(country='us',
                                                  category=user_category,
                                                  language='en')
 
-        interest_news = interest_res['articles']
-        return render_template('index.html', interest_news=interest_news, top_headlines=top_headlines)
+        interest_news = News_List()
+        interest_news.news_mapper(interest_res)
+        print(" *************************** interest_news.list ********************************* ")
+        print(interest_news.list)
+        return render_template('index.html', interest_news=interest_news.list, top_headlines=top_headlines.list)
     else:
-        return render_template('index.html', top_headlines=top_headlines)
+        return render_template('index.html', top_headlines=top_headlines.list)
 
 
 @app.route('/news')
 def news_list():
-    """page with listing of news that user searched for"""
+    """page with listing of news that a user searches for"""
 
     search = request.args.get('q')
     print(" *************************** I SEARCHED ********************************* ")
@@ -210,7 +216,7 @@ def save_news():
         date = news_form.data['date']
         image = news_form.data['image']
 
-        print("*************************** DATA GOT ***************************")
+        print("*************************** DATA I GOT ***************************")
         print(url, title, description, date, image)
         try:
             news = News.save_news(url=url, title=title, description=description,date=date,image=image)
@@ -219,8 +225,17 @@ def save_news():
             db.session.commit()
         except:
             flash("Saving news failed", "danger")
-            return jsonify(errors="database failure", result=False)
+            return jsonify(errors="could not save to the database", result=False)
         return jsonify(message="OK", result=True)
 
     flash('something went wrong with news articles',"danger")
     return jsonify(errors=news_form.errors, result=False)
+
+@app.route('/unsave-news', methods=["POST"])
+def unsave_news():
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect('/')
+    
+    url = request.json['url']
+    
