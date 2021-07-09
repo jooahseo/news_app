@@ -173,8 +173,6 @@ def news_list():
     """page with listing of news that a user searches for"""
 
     search = request.args.get('q')
-    print(" *************************** I SEARCHED ********************************* ")
-    print(search)
     if not search:
         all_res = newsapi.get_top_headlines(country='us', language='en')
         all_articles = News_List()
@@ -182,7 +180,6 @@ def news_list():
 
         return render_template('search.html', articles=all_articles.list)
     else:
-        # res = requests.get(f"{BASE_URL}everything?qInTitle={search}&language=en&sortBy=popularity&apiKey={API_KEY}")
         res = newsapi.get_everything(q=search,
                                      language='en',
                                      sort_by='publishedAt')
@@ -207,14 +204,6 @@ def save_news():
         description = news_form.data['description']
         date = news_form.data['date']
         image = news_form.data['image']
-
-        print("*************************** DATA I GOT ***************************")
-        print(f'URL: {url}--space check')
-        print(f'Title: {title}--space check')
-        print(f'Description: {description}--space check')
-        print(f'Date: {date}--space check')
-        print(f'Image: {image}--space check')
-
         
         news = News.save_news(url=url, title=title, description=description,date=date,image=image)
         new_save = Save(user_id=g.user.id, news_url=news.url)
@@ -246,3 +235,5 @@ def get_saved_news():
         flash("Please login first.", "warning")
         return redirect('/login')
     
+    saved_news = g.user.saved_news
+    return render_template('user_save.html', articles=saved_news)

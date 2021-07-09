@@ -49,7 +49,7 @@ class News(db.Model):
                                   backref="saved_news")
 
     def __repr__(self):
-        return f"<News {self.title[0:40]}... from {self.source}>"
+        return f"<News {self.title[0:40]}... from {self.url[0:40]}...>"
 
     @classmethod
     def save_news(cls, url, title, description, date, image):

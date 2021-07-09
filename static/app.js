@@ -35,40 +35,6 @@ for(let i=0; i<btns.length; i++){
 }
 
 
-// const cards = document.querySelectorAll('.news_card')
-
-// for(let i=0; i<cards.length; i++){
-//     cards[i].addEventListener("click", function(e){
-//         e.preventDefault();
-//         if(e.target.tagName === "BUTTON"){
-//             console.log("target is ", e.target)
-//             if(e.target.classList.contains("saved")){ //news already saved. 
-//                 removeNews(e)
-//                 e.target.innerHTML= "Save"
-//                 e.target.classList.toggle("saved")
-//             }else{ // needs to save news
-//                 saveNewsFromHome(e)
-//                 e.target.innerHTML= "Saved"
-//                 e.target.classList.toggle("saved")
-//             }
-            
-//             // if(e.target.disabled){ //button disabled (it's already saved)
-//             //     e.target.disabled = false;
-//             //     removeNewsMain(e)
-//             // }else{
-//             //     e.target.disabled= true;
-//             //     saveNewsMain(e)
-//             // }
-
-//             // console.log('image url', e.target.nextElementSibling.src)
-//             // console.log('url', e.target.nextElementSibling.nextElementSibling.children[3].href)
-//             // console.log('title',e.target.nextElementSibling.nextElementSibling.children[0].innerHTML)
-//             // console.log('description',e.target.nextElementSibling.nextElementSibling.children[2].innerHTML)
-//             // console.log('date time',e.target.nextElementSibling.nextElementSibling.children[1].innerHTML)
-//         }
-//     })
-// }
-
 /** Add event listeners to buttons in the search ('/news') page */
 
 const searchBtns = document.querySelectorAll('.saveBtnSearch')
@@ -84,12 +50,6 @@ for(let i=0; i< searchBtns.length; i++){
             e.target.innerHTML= "Saved"
             e.target.classList.toggle("saved")
         }
-        console.log('image url', e.target.nextElementSibling.children[0].children[0].src)
-        console.log('title', e.target.nextElementSibling.children[1].children[0].children[0].innerHTML)
-        console.log('description', e.target.nextElementSibling.children[1].children[0].children[1].innerHTML)
-        console.log('url', e.target.nextElementSibling.children[1].children[0].children[3].href)
-        console.log('date time',e.target.nextElementSibling.children[1].children[0].children[2].innerHTML)
-
     })
 }
 
@@ -105,8 +65,6 @@ async function saveNewsFromHome(e){
     const image = e.target.nextElementSibling.src;
 
     res = await axios.post('/save-news', {url, title, description, date, image})
-    console.log(res)
-
 }
 
 async function removeNewsFromHome(e){
@@ -126,7 +84,6 @@ async function saveNewsFromSearch(e){
     const image = e.target.nextElementSibling.children[0].children[0].src;
 
     res = await axios.post('/save-news', {url, title, description, date, image})
-    console.log(res)
 }
 
 async function removeNewsFromSearch(e){

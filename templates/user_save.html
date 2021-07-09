@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Saved News{% endblock %}
+{% block content %}
+    <h4>Saved news by {{g.user.username}}</h4>
+    {% for news in articles %}
+        <div class="search_news card mb-3" style="width: 100%;">
+        {% if g.user%}
+          {% if g.user.is_news_saved(news.url) %}
+            <button class="saveBtnSearch saveBtn btn btn-danger btn-sm saved">
+                Saved
+            </button>
+          {% else%}
+            <button class="saveBtnSearch saveBtn btn btn-danger btn-sm">
+                Save
+            </button>
+          {% endif %}
+        {% endif %}
+            <div class="row g-0">
+                <div class="col-md-4">
+                    {% if not news.image %}
+                        <img src="/static/image/news.png" style="width:100%;" alt="{{news.title[0:30]}}">
+                    {% else %}
+                        <img src="{{news.image}}" class="d-block w-100" alt="image for: {{news.title[0:30]}}">
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{news.title}}</h5>
+                        <p class="card-text">{{news.description}}</p>
+                        <p class="card-text date-time text-muted">{{news.date}}</p>
+                        <a href="{{news.url}}" target="_blank" class="text-secondary">Read More</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
