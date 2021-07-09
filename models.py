@@ -1,7 +1,6 @@
-from datetime import datetime
-
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
+from datetime import datetime
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()
@@ -24,6 +23,8 @@ class Save(db.Model):
     news_url = db.Column(db.String,
                          db.ForeignKey('news.url', ondelete="cascade"),
                          primary_key=True)
+
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow())
 
     user = db.relationship('User')
     news = db.relationship('News')
@@ -74,7 +75,7 @@ class User(db.Model):
     email = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.Text, nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id', ondelete="set null"))
-
+    createdAt = db.Column(db.DateTime, default=datetime.utcnow())
     interest = db.relationship('Category', backref="users")
 
     def __repr__(self):

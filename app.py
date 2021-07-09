@@ -3,6 +3,7 @@ from flask import Flask, flash, render_template, redirect, jsonify, request, g, 
 from flask_debugtoolbar import DebugToolbarExtension
 import requests
 from newsapi import NewsApiClient
+from datetime import datetime
 
 from sqlalchemy.exc import IntegrityError
 
@@ -162,7 +163,6 @@ def home():
                                                  language='en')
         interest_news = News_List()
         interest_news.news_mapper(interest_res)
-
         return render_template('index.html', interest_news=interest_news.list, top_headlines=top_headlines.list)
     else:
         return render_template('index.html', top_headlines=top_headlines.list)
@@ -206,14 +206,12 @@ def save_news():
         image = news_form.data['image']
         
         news = News.save_news(url=url, title=title, description=description,date=date,image=image)
-        new_save = Save(user_id=g.user.id, news_url=news.url)
+        new_save = Save(user_id=g.user.id, news_url=news.url, timestamp=datetime.utcnow())
         db.session.add(new_save)
         db.session.commit()
-        # except:
-        #     return jsonify(errors="could not save to the database", result=False)
+
         return jsonify(message="OK", result=True)
 
-    flash('something went wrong with news articles',"danger")
     return jsonify(errors=news_form.errors, result=False)
 
 @app.route('/unsave-news', methods=["POST"])
@@ -231,9 +229,21 @@ def unsave_news():
 
 @app.route('/saved')
 def get_saved_news():
+    """ show user saved articles order by saved time: recent first"""
+
     if not g.user:
         flash("Please login first.", "warning")
         return redirect('/login')
     
-    saved_news = g.user.saved_news
+    saved = (Save
+            .query
+            .filter_by(user_id=g.user.id)
+            .order_by(Save.timestamp.desc())
+            .all())
+    urls = [save.news_url for save in saved ]
+    saved_news = []
+    for url in urls:
+        news = News.query.get(url)
+        saved_news.append(news)
+
     return render_template('user_save.html', articles=saved_news)

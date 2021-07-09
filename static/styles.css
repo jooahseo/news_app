@@ -123,10 +123,51 @@
     display: block;
 }
 
+
 .btn-sm{
     font-size:10px;
 }
 
 .date-time{
-    font-size: 9px;
+    font-size: 10px;
+}
+
+/* Saved News  */
+.card-box {
+    position: relative;
+    border: 1px solid #ddd;
+    padding: 15px;
+    box-shadow: 0px 0px 10px 0px #c5c5c5;
+    float: left;
+    border-radius: 10px;
+}
+.card-box .card-thumbnail {
+    overflow: hidden;
+    border-radius: 10px;
+    transition: 1s;
+}
+
+.removeBtn{
+    position: absolute;
+    display: none;
+    right: 0;
+    top: 0;
+    margin-top: 8px;
+    margin-right: 8px;
+}
+
+.readMore{
+    position:absolute;
+    right: 0;
+    bottom: 0;
+    margin-bottom: 8px;
+    margin-right: 8px;
+}
+.card-box:hover .removeBtn{
+    display: block;
+}
+
+.card-thumbnail{
+    height: 35%;
+    width: 100%;
 }

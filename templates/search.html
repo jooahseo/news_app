@@ -2,7 +2,9 @@
 {% block title %}News Search{% endblock %}
 {% block content %}
     {% if not articles %}
-    <p>No result found for <b>"{{q}}"</b></p>
+    <div class="my-3">No result found for <b>"{{q}}"</b></div>
+    {% else %}
+    <div class="my-3">Result for <b>"{{q}}"</b></div>
     {% endif %}
     {% for news in articles %}
         <div class="search_news card mb-3" style="width: 100%;">

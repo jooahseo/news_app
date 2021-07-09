@@ -18,7 +18,6 @@ items.forEach((el) => {
 /** Add event listeners to buttons in the main ('/') page */
 
 const btns = document.querySelectorAll('.saveBtnHome')
-
 for(let i=0; i<btns.length; i++){
     btns[i].addEventListener("click", function(e){
         // window.location.reload();
@@ -38,7 +37,6 @@ for(let i=0; i<btns.length; i++){
 /** Add event listeners to buttons in the search ('/news') page */
 
 const searchBtns = document.querySelectorAll('.saveBtnSearch')
-
 for(let i=0; i< searchBtns.length; i++){
     searchBtns[i].addEventListener("click", function(e){
         if(e.target.classList.contains("saved")){ //news already saved. 
@@ -50,6 +48,16 @@ for(let i=0; i< searchBtns.length; i++){
             e.target.innerHTML= "Saved"
             e.target.classList.toggle("saved")
         }
+    })
+}
+
+/** Add event listeners to buttons in the user_save ('/user_save') page */
+
+const removeBtns = document.querySelectorAll('.removeBtn')
+for (let i=0; i<removeBtns.length; i++){
+    removeBtns[i].addEventListener("click", function(e){
+        removeNewsFromSaved(e)
+        e.target.parentElement.parentElement.remove()
     })
 }
 
@@ -90,5 +98,10 @@ async function removeNewsFromSearch(e){
     const cardBody = e.target.nextElementSibling.children[1].children[0];
     const url = cardBody.children[3].href;
 
+    await axios.post('/unsave-news',{url})
+}
+
+async function removeNewsFromSaved(e){
+    const url = e.target.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.href
     await axios.post('/unsave-news',{url})
 }
