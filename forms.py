@@ -7,7 +7,7 @@ import wtforms_json
 wtforms_json.init()
 news_category = [("Business", "Business"), ("Entertainment", "Entertainment"),
                  ("Health", "Health"), ("Science", "Science"),
-                 ("Sports", "Sports"), ("Technology", "Technology"), ("General", "General")]
+                 ("Sports", "Sports"), ("Technology", "Technology")]
 
 class UserEditForm(FlaskForm):
     """Form for user profile edit"""
