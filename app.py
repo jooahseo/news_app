@@ -247,3 +247,15 @@ def get_saved_news():
         saved_news.append(news)
 
     return render_template('user_save.html', articles=saved_news)
+
+@app.route('/delete_user', methods=["DELETE"])
+def delete_user():
+    """Delete a user"""
+    user = g.user
+    try:
+        db.session.delete(user)
+        db.session.commit()
+    except:
+        return jsonify(message="Something went wrong", result=False)
+    do_logout()
+    return jsonify(message="User deleted.", result=True)

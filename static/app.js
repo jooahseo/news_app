@@ -61,7 +61,27 @@ for (let i=0; i<removeBtns.length; i++){
     })
 }
 
+/** User delete action */
+
+const userDelete = document.querySelector("#userDelete")
+
+userDelete.addEventListener("click", function(e){
+    e.preventDefault()
+    const result = confirm("Are you sure to delete your account?")
+    if (result){
+        deleteUser();
+    }
+})
+
 /** Functions to request to server: saving/unsaving news data for user */
+
+async function deleteUser(){
+    const res = await axios.delete('/delete_user')
+    msg = res.data.message
+    if(res.data.result){
+        window.location.replace("/");
+    }
+}
 
 async function saveNewsFromHome(e){
     const cardBody = e.target.nextElementSibling.nextElementSibling;
@@ -72,7 +92,7 @@ async function saveNewsFromHome(e){
     const date = cardBody.children[1].innerHTML;
     const image = e.target.nextElementSibling.src;
 
-    res = await axios.post('/save-news', {url, title, description, date, image})
+    const res = await axios.post('/save-news', {url, title, description, date, image})
 }
 
 async function removeNewsFromHome(e){
@@ -91,7 +111,7 @@ async function saveNewsFromSearch(e){
     const date = cardBody.children[2].innerHTML;
     const image = e.target.nextElementSibling.children[0].children[0].src;
 
-    res = await axios.post('/save-news', {url, title, description, date, image})
+    const res = await axios.post('/save-news', {url, title, description, date, image})
 }
 
 async function removeNewsFromSearch(e){
