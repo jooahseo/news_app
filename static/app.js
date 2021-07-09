@@ -34,7 +34,7 @@ for(let i=0; i<btns.length; i++){
 }
 
 
-/** Add event listeners to buttons in the search ('/news') page */
+/** Add event listeners to buttons in the search ('/search') page */
 
 const searchBtns = document.querySelectorAll('.saveBtnSearch')
 for(let i=0; i< searchBtns.length; i++){
@@ -61,7 +61,7 @@ for (let i=0; i<removeBtns.length; i++){
     })
 }
 
-/** Functions to request to server: saving news data for user */
+/** Functions to request to server: saving/unsaving news data for user */
 
 async function saveNewsFromHome(e){
     const cardBody = e.target.nextElementSibling.nextElementSibling;

@@ -1,28 +1,28 @@
 {% extends 'base.html' %}
 {% block title %}Saved News{% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <h4 class="mt-4 mb-4">My saved news</h4>
-            </div>
-            {% if not articles %}
-                <p class="text-muted">There are no articles saved</p>
-            {% endif %}
-            {% for news in articles %}
-            <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-                <div class="card-box h-100 ">
-                    <button class="removeBtn btn btn-danger btn-sm">
-                        Remove
-                    </button>
-                    <img src="{{news.image}}" class="card-thumbnail img-fluid" alt="{{news.title[0:30]}}">
-                    <h6 class="mt-2">{{news.title}}</h6>
-                    <p class="card-text date-time text-muted mb-2">{{news.date}}</p>
-                    <p class="text-secondary news_description">{{news.description}}</p>
-                    <a href="{{news.url}}" class="btn btn-sm btn-secondary readMore" target="_blank">Read more >></a>
-                </div>
-            </div>
-            {% endfor %}
+
+    <div class="row">
+        <div class="col-12">
+            <h4 class="mt-4 mb-4">My saved news</h4>
         </div>
+        {% if not articles %}
+            <p class="text-muted">There are no articles saved</p>
+        {% endif %}
+        {% for news in articles %}
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card-box h-100 ">
+                <button class="removeBtn btn btn-danger btn-sm">
+                    Remove
+                </button>
+                <img src="{{news.image}}" class="card-thumbnail img-fluid" alt="{{news.title[0:30]}}">
+                <h6 class="mt-2">{{news.title}}</h6>
+                <p class="card-text date-time text-muted mb-2">{{news.date}}</p>
+                <p class="text-secondary news_description">{{news.description}}</p>
+                <a href="{{news.url}}" class="btn btn-sm btn-secondary readMore" target="_blank">Read more >></a>
+            </div>
+        </div>
+        {% endfor %}
     </div>
+
 {% endblock %}

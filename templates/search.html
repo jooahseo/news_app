@@ -7,14 +7,14 @@
     <div class="my-3">Result for <b>"{{q}}"</b></div>
     {% endif %}
     {% for news in articles %}
-        <div class="search_news card mb-3" style="width: 100%;">
+        <div class="card searched_news mb-3">
         {% if g.user%}
           {% if g.user.is_news_saved(news.url) %}
-            <button class="saveBtnSearch saveBtn btn btn-danger btn-sm saved">
+            <button class="btn btn-sm saved saveBtnSearch saveBtn saved">
                 Saved
             </button>
           {% else%}
-            <button class="saveBtnSearch saveBtn btn btn-danger btn-sm">
+            <button class="btn btn-danger btn-sm saveBtnSearch saveBtn">
                 Save
             </button>
           {% endif %}
