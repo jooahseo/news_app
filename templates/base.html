@@ -19,14 +19,16 @@
     <nav class="navbar sticky-top navbar-expand-sm navbar-light bg-light" >
       <div class="container-fluid">
         <a class="navbar-brand" href="/">Daily News</a>
+        <form action="/news" class="d-flex w-50">
+          <input name="q" class="form-control me-2" type="search" placeholder="Search News" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
+        
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <form action="/news" class="d-flex w-50">
-            <input name="q" class="form-control me-2" type="search" placeholder="Search News" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
+          
           {% if not g.user %}
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
