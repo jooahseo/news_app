@@ -7,7 +7,7 @@
     <div class="my-3">Result for <b>"{{q}}"</b></div>
     {% endif %}
     {% for news in articles %}
-        <div class="card searched_news mb-3">
+        <div class="card mb-3">
         {% if g.user%}
           {% if g.user.is_news_saved(news.url) %}
             <button class="btn btn-sm saved saveBtnSearch saveBtn saved">
@@ -27,12 +27,12 @@
                         <img src="{{news.image}}" class="d-block w-100" alt="image for: {{news.title[0:30]}}">
                     {% endif %}
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-8 news_card">
                     <div class="card-body">
                         <h5 class="card-title">{{news.title}}</h5>
                         <p class="card-text news_description">{{news.description}}</p>
                         <p class="card-text date-time text-muted">{{news.date}}</p>
-                        <a href="{{news.url}}" target="_blank" class="text-secondary">Read More</a>
+                        <a href="{{news.url}}" target="_blank" class="btn btn-sm btn-outline-primary readMore">Read More >></a>
 
                     </div>
                 </div>
