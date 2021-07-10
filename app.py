@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a top secret")
-toolbar = DebugToolbarExtension(app)
+# toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
 
@@ -98,7 +98,9 @@ def signup():
                 form.username.errors.append('Username already taken.')
             elif "email" in e.orig.args[0]:
                 form.email.errors.append("Email already exists")
-            
+            else:
+                flash("Something went wrong", "danger")
+
             return render_template('signup.html', form=form)
 
         do_login(user)
