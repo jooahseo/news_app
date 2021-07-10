@@ -92,7 +92,7 @@ async function saveNewsFromHome(e){
     const date = cardBody.children[1].innerHTML;
     const image = e.target.nextElementSibling.src;
 
-    const res = await axios.post('/save-news', {url, title, description, date, image})
+    await axios.post('/save-news', {url, title, description, date, image})
 }
 
 async function removeNewsFromHome(e){
@@ -111,7 +111,7 @@ async function saveNewsFromSearch(e){
     const date = cardBody.children[2].innerHTML;
     const image = e.target.nextElementSibling.children[0].children[0].src;
 
-    const res = await axios.post('/save-news', {url, title, description, date, image})
+    await axios.post('/save-news', {url, title, description, date, image})
 }
 
 async function removeNewsFromSearch(e){

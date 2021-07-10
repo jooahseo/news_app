@@ -1,0 +1,17 @@
+Following explains what testings are done in each file:
+
+>> test_news_model.py
+- test save_news() function in News model
+- When user save the news, Does news save to the user_save table?
+
+>> test_news_view.py
+- After save the news, check html file on user's "my save" page 
+- check html file after user searchs the news
+
+>> test_user_model.py
+- category check after signup
+- login 
+- is_news_saved 
+
+>> test_user_view.py
+- sign up with existing username

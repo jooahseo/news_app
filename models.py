@@ -26,9 +26,6 @@ class Save(db.Model):
 
     timestamp = db.Column(db.DateTime, default=datetime.utcnow())
 
-    user = db.relationship('User')
-    news = db.relationship('News')
-
     def __repr__(self):
         return f"<user_save User #{self.user_id} {self.user.username} - News #{self.news_url}>"
 
@@ -76,6 +73,7 @@ class User(db.Model):
     password = db.Column(db.Text, nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id', ondelete="set null"))
     createdAt = db.Column(db.DateTime, default=datetime.utcnow())
+    
     interest = db.relationship('Category', backref="users")
 
     def __repr__(self):
@@ -86,8 +84,6 @@ class User(db.Model):
 
         news = Save.query.get((self.id, url))
         return True if news else False
-        # found_news = [news for news in self.saved_news if news.url == url]
-        # return len(found_news) == 1
 
     @classmethod
     def signup(cls, username, email, password, category_id):

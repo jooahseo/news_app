@@ -29,7 +29,7 @@ BASE_URL = "https://newsapi.org/v2/"
 newsapi = NewsApiClient(api_key=API_KEY)
 
 ##############################################################################
-# User signup/login/logout/edit
+# User signup/login/logout/edit/delete
 
 
 @app.before_request
@@ -93,12 +93,15 @@ def signup():
             )
             db.session.commit()
 
-        except IntegrityError:
-            form.username.errors.append('Username already taken.')
+        except IntegrityError as e:
+            if "username" in e.orig.args[0]:
+                form.username.errors.append('Username already taken.')
+            elif "email" in e.orig.args[0]:
+                form.email.errors.append("Email already exists")
+            
             return render_template('signup.html', form=form)
 
         do_login(user)
-
         return redirect("/")
 
     else:
@@ -144,8 +147,22 @@ def user_edit():
 
     return render_template('edit.html', form=form)
 
+
+@app.route('/delete_user', methods=["DELETE"])
+def delete_user():
+    """Delete a user"""
+    user = g.user
+    try:
+        db.session.delete(user)
+        db.session.commit()
+    except:
+        return jsonify(message="Something went wrong", result=False)
+    do_logout()
+    return jsonify(message="User deleted.", result=True)
+
+
 ##############################################################################
-# News request
+# News data request to api 
 
 
 @app.route('/')
@@ -189,6 +206,10 @@ def news_list():
 
         return render_template('search.html', articles=articles.list, q=search)
 
+
+##############################################################################
+# Save/unsave news to database
+
 @app.route('/save-news', methods=["POST"])
 def save_news():
     if not g.user:
@@ -227,6 +248,11 @@ def unsave_news():
     
     return jsonify(message="unsaved successfully", result=True)
 
+
+##############################################################################
+# Get saved news from database
+
+
 @app.route('/saved')
 def get_saved_news():
     """ show user saved articles order by saved time: recent first"""
@@ -247,15 +273,3 @@ def get_saved_news():
         saved_news.append(news)
 
     return render_template('user_save.html', articles=saved_news)
-
-@app.route('/delete_user', methods=["DELETE"])
-def delete_user():
-    """Delete a user"""
-    user = g.user
-    try:
-        db.session.delete(user)
-        db.session.commit()
-    except:
-        return jsonify(message="Something went wrong", result=False)
-    do_logout()
-    return jsonify(message="User deleted.", result=True)

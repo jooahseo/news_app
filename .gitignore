@@ -3,3 +3,4 @@ venv/
 __pycache__
 logos/
 checklist.txt
+test/__pycache__
