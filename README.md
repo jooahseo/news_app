@@ -31,6 +31,9 @@ On the main page, news will be displayed in the carousel. <br>
 **User's save page**
 ![User's save s page](image/save_page.png?raw=true "User's save s page")
 
+#### Resources Used:
+- NewsAPI [https://newsapi.org/](https://newsapi.org/)
+
 #### Technology Used:
 - Python
 - Flask
