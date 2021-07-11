@@ -1,8 +1,8 @@
 # news_app
 
-###This is the web application that users can search, save news to their save page. This app is built using Python & JavaScript with data from NewsAPI [https://newsapi.org/](https://newsapi.org/). App is tested with Python’s unittest. 
+### This is the web application that users can search, save news to their save page. This app is built using Python & JavaScript with data from NewsAPI [https://newsapi.org/](https://newsapi.org/). App is tested with Python’s unittest. 
 
-###App features:
+### App features:
 - **For global user (not signed in)**
 	- Check today’s top headline
 	- Search news
@@ -14,7 +14,7 @@
 	- Check / remove saved news 
 	- Delete account
 
-###Screenshot of the app:
+### Screenshot of the app:
 On the main page, news will be displayed in the carousel. <br>
 
 **User not signed in**
