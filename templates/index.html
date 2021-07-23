@@ -25,11 +25,11 @@
                 <div class="news_card card h-100">
                     {% if g.user%}
                         {% if g.user.is_news_saved(news.url) %}
-                            <button class="saveBtnHome saveBtn btn btn-danger btn-sm saved">
+                            <button data-url="{{news.url}}" class="saveBtnHome saveBtn btn btn-danger btn-sm saved {{news.url}}">
                                 Saved
                             </button>
                         {% else%}
-                            <button class="saveBtnHome saveBtn btn btn-danger btn-sm">
+                            <button data-url="{{news.url}}" class="saveBtnHome saveBtn btn btn-danger btn-sm {{news.url}}">
                                 Save
                             </button>
                         {% endif %}
@@ -75,11 +75,11 @@
                 <div class="news_card card">
                     {% if g.user%}
                         {% if g.user.is_news_saved(news.url) %}
-                            <button class="saveBtnHome saveBtn btn btn-danger btn-sm saved">
+                            <button data-url="{{news.url}}" class="saveBtnHome saveBtn btn btn-danger btn-sm saved {{news.url}}">
                                 Saved
                             </button>
                         {% else%}
-                            <button class="saveBtnHome saveBtn btn btn-danger btn-sm">
+                            <button data-url="{{news.url}}" class="saveBtnHome saveBtn btn btn-danger btn-sm {{news.url}}">
                                 Save
                             </button>
                         {% endif %}

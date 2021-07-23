@@ -20,15 +20,22 @@ items.forEach((el) => {
 const btns = document.querySelectorAll('.saveBtnHome')
 for(let i=0; i<btns.length; i++){
     btns[i].addEventListener("click", function(e){
-        // window.location.reload();
+        
+        const newsUrl = e.target.dataset.url;
+        const urlBtns = document.getElementsByClassName(`${newsUrl}`)
+
         if(e.target.classList.contains("saved")){ //news already saved. 
             removeNewsFromHome(e)
-            e.target.innerHTML= "Save"
-            e.target.classList.toggle("saved")
+            for(btn of urlBtns){
+                btn.innerHTML = "Save"
+                btn.classList.toggle("saved")
+            }
         }else{ // needs to save news
             saveNewsFromHome(e)
-            e.target.innerHTML= "Saved"
-            e.target.classList.toggle("saved")
+            for(btn of urlBtns){
+                btn.innerHTML = "Saved"
+                btn.classList.toggle("saved")
+            }
         }
     })
 }
