@@ -5,8 +5,9 @@
 #    python -m unittest test_news_view.py
 
 from app import app, CURR_USER_KEY
-from flask import jsonify
+from flask import jsonify, request
 import os
+import json
 from unittest import TestCase
 from sqlalchemy import exc
 from datetime import datetime
@@ -55,20 +56,6 @@ class NewsViewTestCase(TestCase):
         db.session.add(save)
         db.session.commit()
 
-    # def test_response_after_save_news(self):
-    #     """Get response message "OK" after user requests to save the news. """
-    #     with self.client as c:
-    #         with c.session_transaction() as sess:
-    #             sess[CURR_USER_KEY] = self.u.id
-
-    #         res = c.post('/save-news', data=jsonify(url="www.testing.com",
-    #                                           title = "testing is fun",
-    #                                           description="You should understand how important the testing is",
-    #                                           date = datetime.utcnow(),
-    #                                           image= "testimgurl"))
-    #         print(res.data)
-            # self.assertEqual("OK", str(res.data.message))
-
     def test_user_saved_news(self):
         """After save the news, check html file on user's "my save" page"""
         
@@ -99,3 +86,18 @@ class NewsViewTestCase(TestCase):
 
             self.assertEqual(res2.status_code, 200)
             self.assertIn('No result found for ', str(res2.data))
+
+    def test_response_after_save_news(self):
+        """Get response message "OK" after user requests to save the news. """
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.u.id
+
+            res = c.post('/save-news', data=json.dumps(dict(url="www.testing.com",
+                                                             title = "testing is fun",
+                                                             description="how important the testing is",
+                                                             date = datetime.utcnow(),
+                                                             image= "testimgurl")),
+                                        content_type='application/json')
+            print(res.data)
+            self.assertEqual("OK", str(res.data.message))
