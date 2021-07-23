@@ -4,3 +4,5 @@ __pycache__
 logos/
 checklist.txt
 test/__pycache__
+note.txt
+image/.DS_Store
