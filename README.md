@@ -1,5 +1,5 @@
 # news_app
-
+#### live app: https://jooah-daily-news.herokuapp.com/
 ### This is the web application that users can search, save news to their save page. This app is built using Python & JavaScript with data from NewsAPI [https://newsapi.org/](https://newsapi.org/). App is tested with Python’s unittest. 
 
 ### App features:
